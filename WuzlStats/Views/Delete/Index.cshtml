@@ -1,0 +1,8 @@
+﻿@model WuzlStats.ViewModels.Delete.IndexViewModel
+
+@foreach (var s in Model.Scores)
+{
+    <p>
+        <code>@s.DateTime</code>  @s.TeamBlue <b>@s.Outcome</b> @s.TeamRed @Html.ActionLink("Delete", "Index", new { s.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Sure?');" })
+    </p>
+}
