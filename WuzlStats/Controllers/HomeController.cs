@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using WuzlStats.Models;
 using WuzlStats.ViewModels.Home;
@@ -12,17 +11,7 @@ namespace WuzlStats.Controllers
 
         public ActionResult Index()
         {
-            var model = new IndexViewModel().Build(_db.Scores.OrderByDescending(x => x.Date).Take(20));
-
-
-            var players = _db.Scores.Select(x => x.TeamBlueDefensePlayer)
-                .Concat(_db.Scores.Select(x => x.TeamBlueOffensePlayer))
-                .Concat(_db.Scores.Select(x => x.TeamRedDefensePlayer))
-                .Concat(_db.Scores.Select(x => x.TeamRedOffensePlayer))
-                .Distinct().OrderBy(x => x).ToList();
-            model.Players = players;
-
-            return View(model);
+            return View(new IndexViewModel().Build(_db));
         }
 
         [HttpPost]
@@ -32,13 +21,13 @@ namespace WuzlStats.Controllers
             {
                 var score = new Score
                 {
-                    TeamBlueDefensePlayer = model.TeamBlueDefensePlayer,
-                    TeamBlueOffensePlayer = model.TeamBlueOffensePlayer,
+                    TeamBlueDefensePlayer = NormalizeName(model.TeamBlueDefensePlayer),
+                    TeamBlueOffensePlayer = NormalizeName(model.TeamBlueOffensePlayer),
                     TeamBlueScore = model.TeamBlueScore,
-                    TeamRedDefensePlayer = model.TeamRedDefensePlayer,
-                    TeamRedOffensePlayer = model.TeamRedOffensePlayer,
+                    TeamRedDefensePlayer = NormalizeName(model.TeamRedDefensePlayer),
+                    TeamRedOffensePlayer = NormalizeName(model.TeamRedOffensePlayer),
                     TeamRedScore = model.TeamRedScore,
-                    Date = DateTime.Now
+                    Date = DateTime.UtcNow
                 };
                 _db.Scores.Add(score);
                 _db.SaveChanges();
@@ -47,6 +36,16 @@ namespace WuzlStats.Controllers
             }
 
             return View();
+        }
+
+        private string NormalizeName(string name)
+        {
+            if (name == null || name.Length <= 1)
+                return name ?? "";
+
+            var result = name.Substring(1).ToLowerInvariant();
+            result = name[0].ToString().ToUpperInvariant() + result;
+            return result;
         }
     }
 }
