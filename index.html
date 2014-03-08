@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Wuzlstats : Because we all need to track the Wuzl score at the office." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Wuzlstats</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/saxx/Wuzlstats">View on GitHub</a>
+
+          <h1 id="project_title">Wuzlstats</h1>
+          <h2 id="project_tagline">Because we all need to track the Wuzl score at the office.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/saxx/Wuzlstats/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/saxx/Wuzlstats/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="what" class="anchor" href="#what"><span class="octicon octicon-link"></span></a>What?</h2>
+
+<p>Wuzlstats is a simple web application to keep track of your offices Wuzl[1] score.</p>
+
+<p>[1] <em>Wuzln</em> may also be called <em>Tischfußball</em>, <em>Tisch-Kicken</em> or something similar, depending on where you come from. But <em>Wuzln</em> is the correct way.</p>
+
+<h2>
+<a name="how" class="anchor" href="#how"><span class="octicon octicon-link"></span></a>How?</h2>
+
+<p>You'll need IIS and .NET 4.5.1 to host this web application (built with ASP.NET MVC). Also, SQL Server is required for storing the scores.</p>
+
+<p>The easiest way to get Wuzlstats up and running is to use the free tier of Azure:</p>
+
+<ol>
+<li>Fork the Wuzlstats repository on GitHub</li>
+<li>Log in to the Azure management portal. Create a free account if you don't have one yet.</li>
+<li>Create a new Website
+
+<ol>
+<li>Use your fork on GitHub for automatic publishing</li>
+<li>Create a SQL Server database (the free 20 MB are more than enough). Use <code>Db</code> as the name for the connection string</li>
+</ol>
+</li>
+<li>Done.</li>
+</ol>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Wuzlstats maintained by <a href="https://github.com/saxx">saxx</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-3250157-9");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
