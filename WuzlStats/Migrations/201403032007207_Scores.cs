@@ -1,6 +1,5 @@
 namespace WuzlStats.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class Scores : DbMigration
@@ -11,14 +10,14 @@ namespace WuzlStats.Migrations
                 "dbo.Scores",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.Int(false, true),
                         TeamBlueOffensePlayer = c.String(),
                         TeamBlueDefensePlayer = c.String(),
-                        TeamBlueScore = c.Int(nullable: false),
+                        TeamBlueScore = c.Int(false),
                         TeamRedOffensePlayer = c.String(),
                         TeamRedDefensePlayer = c.String(),
-                        TeamRedScore = c.Int(nullable: false),
-                        Date = c.DateTime(nullable: false),
+                        TeamRedScore = c.Int(false),
+                        Date = c.DateTime(false),
                     })
                 .PrimaryKey(t => t.Id);
             

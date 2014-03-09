@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Web.Mvc;
 using WuzlStats.Models;
 using WuzlStats.ViewModels.Home;
@@ -44,7 +45,7 @@ namespace WuzlStats.Controllers
                 return name ?? "";
 
             var result = name.Substring(1).ToLowerInvariant();
-            result = name[0].ToString().ToUpperInvariant() + result;
+            result = name[0].ToString(CultureInfo.InvariantCulture).ToUpperInvariant() + result;
             return result;
         }
     }

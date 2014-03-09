@@ -17,6 +17,8 @@ namespace WuzlStats.ViewModels.Player
                     || x.TeamRedDefensePlayer == playerName
                     || x.TeamRedOffensePlayer == playerName)
                     .ToList();
+            scores = scores.Where(x => x.TeamBlueDefensePlayer != x.TeamBlueOffensePlayer && x.TeamRedDefensePlayer != x.TeamRedOffensePlayer).ToList();
+
 
             if (scores.Count <= 0)
                 throw new ArgumentOutOfRangeException("playerName", playerName, "The provided player seems to have no scores saved at all.");
