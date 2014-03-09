@@ -1,8 +1,34 @@
 ﻿@model WuzlStats.ViewModels.Delete.IndexViewModel
 
-@foreach (var s in Model.Scores)
-{
-    <p>
-        <code>@s.DateTime</code>  @s.TeamBlue <b>@s.Outcome</b> @s.TeamRed @Html.ActionLink("Delete", "Index", new { s.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Sure?');" })
-    </p>
-}
+<table class="table table-striped">
+    <tr>
+        <th>Date</th>
+        <th>Blue</th>
+        <th>Score</th>
+        <th>Red</th>
+        <th></th>
+    </tr>
+
+    @foreach (var s in Model.Scores)
+    {
+        <tr>
+            <td>@s.DateTime</td>
+            <td>
+                @if (s.BlueScore > s.RedScore)
+                {
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                }
+                @s.TeamBlue
+            </td>
+            <td><b>@s.BlueScore : @s.RedScore</b></td>
+            <td>
+                @if (s.BlueScore < s.RedScore)
+                {
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                }
+                @s.TeamRed
+            </td>
+            <td>@Html.ActionLink("Delete", "Index", new { s.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Sure?');" })</td>
+        </tr>
+    }
+</table>

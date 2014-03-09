@@ -12,7 +12,8 @@ namespace WuzlStats.ViewModels.Delete
             {
                 TeamBlue = s.TeamBlueOffensePlayer + " / " + s.TeamBlueDefensePlayer,
                 TeamRed = s.TeamRedOffensePlayer + " / " + s.TeamRedDefensePlayer,
-                Outcome = s.TeamBlueScore + ":" + s.TeamRedScore,
+                BlueScore = s.TeamBlueScore,
+                RedScore = s.TeamRedScore,
                 Id = s.Id,
                 DateTime = s.Date
             }).ToList();
@@ -30,7 +31,8 @@ namespace WuzlStats.ViewModels.Delete
             public DateTime DateTime { get; set; }
             public string TeamBlue { get; set; }
             public string TeamRed { get; set; }
-            public string Outcome { get; set; }
+            public int BlueScore { get; set; }
+            public int RedScore { get; set; }
         }
 
     }
