@@ -20,7 +20,7 @@ namespace WuzlStats.ViewModels.Players
                        select new Player
                        {
                            Name = playerName,
-                           LastPlayedDate = playerScores.Max(x => x.Date),
+                           LastPlayedDate = playerScores.Max(x => x.Date).ToLocalTime(),
                            NumberOfGames = playerScores.Count()
                        }).ToList();
 

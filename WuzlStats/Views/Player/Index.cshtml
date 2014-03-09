@@ -1,0 +1,29 @@
+﻿@model WuzlStats.ViewModels.Player.IndexViewModel
+
+
+<h1>Player <b>@Model.Name</b></h1>
+
+<p>
+    <label>Last played:</label>
+    @Model.LastPlayedDate.ToShortDateString()
+</p>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="well">
+            <h3>Current stats (last 30 days)</h3>
+            @Html.Partial("PlayerStats", Model.CurrentStats)
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+        <div class="well">
+            <h3>All time stats</h3>
+            @Html.Partial("PlayerStats", Model.AllTimeStats)
+        </div>
+
+    </div>
+</div>
+
