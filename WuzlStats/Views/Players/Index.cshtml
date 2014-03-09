@@ -1,0 +1,22 @@
+﻿@model WuzlStats.ViewModels.Players.IndexViewModel
+
+<table class="table table-striped">
+    <tr>
+        <th>Player</th>
+        <th>Last played</th>
+        <th>Times played</th>
+    </tr>
+
+    @foreach (var s in Model.Players)
+    {
+        <tr>
+            <td>@s.Name</td>
+            <td>
+                @s.LastPlayedDate.ToShortDateString()
+            </td>
+            <td>
+                @s.NumberOfGames
+            </td>
+        </tr>
+    }
+</table>

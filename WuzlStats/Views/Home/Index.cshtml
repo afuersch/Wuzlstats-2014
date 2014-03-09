@@ -13,22 +13,22 @@
         {
             <div class="row">
                 <div class="col-xs-4">
-                    <label>Blue</label>
+                    <label>Blue Team</label>
                     @Html.TextBoxFor(x => x.TeamBlueOffensePlayer, new { placeholder = "Offense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
                     @Html.TextBoxFor(x => x.TeamBlueDefensePlayer, new { placeholder = "Defense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })
                 </div>
-                <div class="col-xs-4" style="font-size: 1.5em; margin-top:40px;">
+                <div class="col-xs-4" style="font-size: 1.5em; margin-top:40px; padding:0;">
                     <div class="row">
                         <div class="col-xs-6">
-                            @Html.TextBoxFor(x => x.TeamBlueScore, new { required = "required", style = "width:50px; font-size: 1em; height: 2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
+                            @Html.TextBoxFor(x => x.TeamBlueScore, new { required = "required", style = "max-width:50px; font-size: 1em; height: 2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
                         </div>
                         <div class="col-xs-6">
-                            @Html.TextBoxFor(x => x.TeamRedScore, new { required = "required", style = "width:50px; font-size: 1em; height:2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
+                            @Html.TextBoxFor(x => x.TeamRedScore, new { required = "required", style = "max-width:50px; font-size: 1em; height:2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <label>Red</label>
+                    <label>Red Team</label>
                     @Html.TextBoxFor(x => x.TeamRedOffensePlayer, new { placeholder = "Offense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
                     @Html.TextBoxFor(x => x.TeamRedDefensePlayer, new { placeholder = "Defense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })
                 </div>
