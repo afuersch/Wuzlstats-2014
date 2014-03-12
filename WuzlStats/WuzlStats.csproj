@@ -125,8 +125,19 @@
     <Compile Include="Migrations\201403032007207_Scores.Designer.cs">
       <DependentUpon>201403032007207_Scores.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403121857211_SinglePlayerGames.cs" />
+    <Compile Include="Migrations\201403121857211_SinglePlayerGames.Designer.cs">
+      <DependentUpon>201403121857211_SinglePlayerGames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403121932182_MigrateOldScores.cs" />
+    <Compile Include="Migrations\201403121932182_MigrateOldScores.Designer.cs">
+      <DependentUpon>201403121932182_MigrateOldScores.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Db.cs" />
+    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\PlayerPosition.cs" />
     <Compile Include="Models\Score.cs" />
     <Compile Include="ViewModels\Delete\IndexViewModel.cs" />
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
@@ -175,6 +186,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403032007207_Scores.resx">
       <DependentUpon>201403032007207_Scores.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403121857211_SinglePlayerGames.resx">
+      <DependentUpon>201403121857211_SinglePlayerGames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403121932182_MigrateOldScores.resx">
+      <DependentUpon>201403121932182_MigrateOldScores.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -11,6 +11,8 @@ namespace WuzlStats.Models
 
         }
 
-        public IDbSet<Score> Scores { get; set; }
+        public IDbSet<Game> Games { get; set; }
+        public IDbSet<Player> Players { get; set; }
+        public IDbSet<PlayerPosition> PlayerPositions { get; set; }
     }
 }

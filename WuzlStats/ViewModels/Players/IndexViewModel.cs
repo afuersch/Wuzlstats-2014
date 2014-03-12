@@ -9,24 +9,20 @@ namespace WuzlStats.ViewModels.Players
     {
         public IndexViewModel Build(Db db)
         {
-            var playerNames = (db.Scores.Select(x => x.TeamBlueOffensePlayer)
-                .Concat(db.Scores.Select(x => x.TeamBlueDefensePlayer))
-                .Concat(db.Scores.Select(x => x.TeamRedOffensePlayer))
-                .Concat(db.Scores.Select(x => x.TeamRedDefensePlayer))).Distinct().OrderBy(x => x).ToList();
-
-            Players = (from playerName in playerNames
-                       let playerScores =
-                           db.Scores.Where(x => (x.TeamBlueDefensePlayer == playerName || x.TeamBlueOffensePlayer == playerName || x.TeamRedDefensePlayer == playerName || x.TeamRedOffensePlayer == playerName) && x.TeamBlueDefensePlayer != x.TeamBlueOffensePlayer && x.TeamRedDefensePlayer != x.TeamRedOffensePlayer)
+            Players = (from player in db.Players
+                       orderby player.Name
                        select new Player
                        {
-                           Name = playerName,
-                           LastPlayedDate = playerScores.Max(x => x.Date).ToLocalTime(),
-                           NumberOfGames = playerScores.Count()
+                           Name = player.Name,
+                           NumberOfGames = player.Games.Count(),
+                           LastPlayedDate = player.Games.Max(x => x.Game.DateTime)
                        }).ToList();
+
+            foreach (var p in Players)
+                p.LastPlayedDate = p.LastPlayedDate.ToLocalTime();
 
             return this;
         }
-
 
         public IEnumerable<Player> Players { get; set; }
 

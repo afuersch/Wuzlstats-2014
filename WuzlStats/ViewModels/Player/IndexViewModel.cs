@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using WuzlStats.Models;
 
@@ -11,56 +10,39 @@ namespace WuzlStats.ViewModels.Player
         {
             Name = playerName;
 
-            var scores =
-                db.Scores.Where(x => x.TeamBlueDefensePlayer == playerName
-                    || x.TeamBlueOffensePlayer == playerName
-                    || x.TeamRedDefensePlayer == playerName
-                    || x.TeamRedOffensePlayer == playerName)
-                    .ToList();
-            scores = scores.Where(x => x.TeamBlueDefensePlayer != x.TeamBlueOffensePlayer && x.TeamRedDefensePlayer != x.TeamRedOffensePlayer).ToList();
+            var games = db.PlayerPositions.Where(x => x.Player.Name == playerName && x.Position != Position.Both);
 
-
-            if (scores.Count <= 0)
-                throw new ArgumentOutOfRangeException("playerName", playerName, "The provided player seems to have no scores saved at all.");
-
-            LastPlayedDate = scores.Max(x => x.Date).ToLocalTime();
-            AllTimeStats = Calculate(scores);
-            CurrentStats = Calculate(scores.Where(x => x.Date >= DateTime.UtcNow.AddDays(-30)).ToList());
+            var minDate = DateTime.UtcNow.AddDays(-30);
+            LastPlayedDate = games.Max(x => x.Game.DateTime).ToLocalTime();
+            AllTimeStats = Calculate(games);
+            CurrentStats = Calculate(games.Where(x => x.Game.DateTime >= minDate));
 
             return this;
         }
 
-        private PlayerStats Calculate(IList<Score> scores)
+        private PlayerStats Calculate(IQueryable<PlayerPosition> games)
         {
             var result = new PlayerStats();
 
-            var blueWins = scores.Where(x => x.TeamBlueScore > x.TeamRedScore).ToList();
-            var redWins = scores.Where(x => x.TeamBlueScore < x.TeamRedScore).ToList();
+            var blueWins = games.Where(x => x.Game.BlueScore > x.Game.RedScore).ToList();
+            var redWins = games.Where(x => x.Game.BlueScore < x.Game.RedScore).ToList();
 
-            result.WinsCount = blueWins.Count(x => x.TeamBlueOffensePlayer == Name || x.TeamBlueDefensePlayer == Name)
-                               + redWins.Count(x => x.TeamRedOffensePlayer == Name || x.TeamRedDefensePlayer == Name);
-            result.LossesCount = blueWins.Count(x => x.TeamRedOffensePlayer == Name || x.TeamRedDefensePlayer == Name)
-                                 + redWins.Count(x => x.TeamBlueOffensePlayer == Name || x.TeamBlueDefensePlayer == Name);
+            result.WinsCount = blueWins.Count(x => x.Team == Team.Blue) + redWins.Count(x => x.Team == Team.Red);
+            result.LossesCount = blueWins.Count(x => x.Team == Team.Red) + redWins.Count(x => x.Team == Team.Blue);
 
-
-            var otherPlayers = (scores.Select(x => x.TeamBlueOffensePlayer)
-                .Concat(scores.Select(x => x.TeamBlueDefensePlayer))
-                .Concat(scores.Select(x => x.TeamRedOffensePlayer))
-                .Concat(scores.Select(x => x.TeamRedDefensePlayer))).Where(x => x != Name);
-            var otherPlayersGrouped = from x in otherPlayers
+            var otherPlayers = games.SelectMany(x => x.Game.Players.Where(y => y.Team == x.Team && y.Player != x.Player)).Select(x => x.Player.Name);
+            result.FavoritePartner = (from x in otherPlayers
                                       group x by x
                                           into g
                                           orderby g.Count() descending
                                           select new
                                           {
-                                              Name = g.Key,
-                                              Count = g.Count()
-                                          };
-            result.FavoritePartner = otherPlayersGrouped.First().Name;
+                                              Name = g.Key
+                                          }).First().Name;
 
 
-            var blueCount = scores.Count(x => x.TeamBlueDefensePlayer == Name || x.TeamBlueOffensePlayer == Name);
-            var redCount = scores.Count() - blueCount;
+            var blueCount = games.Count(x => x.Team == Team.Blue);
+            var redCount = games.Count(x => x.Team == Team.Red);
             if (redCount == blueCount)
                 result.FavoriteTeam = "No favorite team";
             else if (redCount < blueCount)
@@ -68,8 +50,8 @@ namespace WuzlStats.ViewModels.Player
             else
                 result.FavoriteTeam = "Red";
 
-            var offenseCount = scores.Count(x => x.TeamRedOffensePlayer == Name || x.TeamBlueOffensePlayer == Name);
-            var defenseCount = scores.Count() - offenseCount;
+            var offenseCount = games.Count(x => x.Position == Position.Offense);
+            var defenseCount = games.Count(x => x.Position == Position.Defense);
             if (defenseCount == offenseCount)
                 result.FavoritePosition = "No favorite position";
             else if (defenseCount < offenseCount)

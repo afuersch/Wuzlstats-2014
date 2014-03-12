@@ -9,20 +9,28 @@ namespace WuzlStats.Controllers
     {
         private readonly Db _db = new Db();
 
-        public ActionResult Index(int? id)
+        [Route("Delete")]
+        public ActionResult Index()
         {
-            if (id.HasValue)
+            return View(new IndexViewModel().Build(_db));
+        }
+
+        [Route("Delete/{gameId}")]
+        public ActionResult Index(int gameId)
+        {
+            var game = _db.Games.Find(gameId);
+            if (game != null)
             {
-                var score = _db.Scores.FirstOrDefault(x => x.Id == id);
-                if (score != null)
-                {
-                    _db.Scores.Remove(score);
-                    _db.SaveChanges();
-                }
+                _db.Games.Remove(game);
+                _db.SaveChanges();
+
+                // remove all players that don't have any games left (to clean up the database if necessary)
+                foreach (var p in _db.Players.Where(x => !x.Games.Any()))
+                    _db.Players.Remove(p);
+                _db.SaveChanges();
             }
 
-            var model = new IndexViewModel().Build(_db.Scores.OrderByDescending(x => x.Date).Take(20));
-            return View(model);
+            return RedirectToAction("Index");
         }
     }
 }

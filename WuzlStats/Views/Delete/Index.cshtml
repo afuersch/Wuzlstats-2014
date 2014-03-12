@@ -28,7 +28,9 @@
                 }
                 @s.TeamRed
             </td>
-            <td>@Html.ActionLink("Delete", "Index", new { s.Id }, new { @class = "btn btn-danger", onclick = "return confirm('Sure?');" })</td>
+            <td>
+                <a href="@Url.Content("~/Delete/" + s.Id)" class="btn btn-danger" onclick="return confirm('Sure?');">Delete</a>
+            </td>
         </tr>
     }
 </table>

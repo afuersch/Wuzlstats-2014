@@ -10,34 +10,23 @@ namespace WuzlStats.ViewModels.Home
     {
         public IndexViewModel Build(Db db)
         {
-            AllPlayers = (db.Scores.Select(x => x.TeamBlueOffensePlayer)
-                .Concat(db.Scores.Select(x => x.TeamBlueDefensePlayer))
-                .Concat(db.Scores.Select(x => x.TeamRedOffensePlayer))
-                .Concat(db.Scores.Select(x => x.TeamRedDefensePlayer))).Distinct().OrderBy(x => x).ToList();
-
+            AllPlayers = db.Players.Select(x => x.Name).OrderBy(x => x);
             var minDate = DateTime.UtcNow.AddDays(-30);
-            var scores = db.Scores.Where(x => x.Date >= minDate && x.TeamBlueDefensePlayer != x.TeamBlueOffensePlayer && x.TeamRedDefensePlayer != x.TeamRedOffensePlayer).ToList();
 
-            CalculatePlayerScores(scores);
-            CalculateTeamScores(scores);
+            #region Player scores
 
-            return this;
-        }
-
-
-        private void CalculatePlayerScores(IList<Score> scores)
-        {
-            var blueWins = scores.Where(x => x.TeamBlueScore > x.TeamRedScore).ToList();
-            var redWins = scores.Where(x => x.TeamBlueScore < x.TeamRedScore).ToList();
-
-            var playersAndScores = AllPlayers.Select(player => new PlayerAndScore
-            {
-                Name = player,
-                WinsOffense = blueWins.Where(x => x.TeamBlueOffensePlayer == player).Concat(redWins.Where(x => x.TeamRedOffensePlayer == player)).Count(),
-                WinsDefense = blueWins.Where(x => x.TeamBlueDefensePlayer == player).Concat(redWins.Where(x => x.TeamRedDefensePlayer == player)).Count(),
-                LossesOffense = redWins.Where(x => x.TeamBlueOffensePlayer == player).Concat(blueWins.Where(x => x.TeamRedOffensePlayer == player)).Count(),
-                LossesDefense = redWins.Where(x => x.TeamBlueDefensePlayer == player).Concat(blueWins.Where(x => x.TeamRedDefensePlayer == player)).Count()
-            }).ToList();
+            var playersAndScores = (from player in db.Players
+                                    let games = player.Games.Where(x => x.Game.DateTime >= minDate)
+                                    let wonGames = games.Where(x => (x.Game.BlueScore > x.Game.RedScore && x.Team == Team.Blue) || (x.Game.BlueScore < x.Game.RedScore && x.Team == Team.Red))
+                                    let lostGames = games.Where(x => (x.Game.BlueScore < x.Game.RedScore && x.Team == Team.Blue) || (x.Game.BlueScore > x.Game.RedScore && x.Team == Team.Red))
+                                    select new PlayerAndScore
+                                    {
+                                        Name = player.Name,
+                                        LossesDefense = lostGames.Count(x => x.Position == Position.Defense),
+                                        LossesOffense = lostGames.Count(x => x.Position == Position.Offense),
+                                        WinsDefense = wonGames.Count(x => x.Position == Position.Defense),
+                                        WinsOffense = wonGames.Count(x => x.Position == Position.Offense)
+                                    }).ToList();
 
             BestPlayers = playersAndScores.OrderByDescending(x => x.Ratio);
             WorstPlayers = playersAndScores.OrderBy(x => x.Ratio);
@@ -46,47 +35,67 @@ namespace WuzlStats.ViewModels.Home
             BestDefensePlayers = playersAndScores.OrderByDescending(x => x.DefenseRatio);
 
             MostActivePlayers = playersAndScores.OrderByDescending(x => x.WinsDefense + x.WinsOffense + x.LossesDefense + x.LossesOffense);
-        }
 
-        private void CalculateTeamScores(IEnumerable<Score> scores)
-        {
-            var teams = new List<TeamAndScore>();
-            foreach (var score in scores)
+            #endregion
+
+            #region Team scores
+
+            var teams = (from game in db.Games
+                         where game.DateTime >= minDate
+                         select new
+                         {
+                             BlueTeam = game.Players.Where(x => x.Team == Team.Blue).OrderBy(x => x.Position).Select(x => x.Player).ToList(),
+                             RedTeam = game.Players.Where(x => x.Team == Team.Red).OrderBy(x => x.Position).Select(x => x.Player).ToList(),
+                             BlueWins = game.BlueScore > game.RedScore
+                         }).ToList();
+
+            var teamsResult = new List<TeamAndScore>();
+            foreach (var team in teams)
             {
-                var blueTeam = teams.FirstOrDefault(x => x.OffensePlayerName == score.TeamBlueOffensePlayer && x.DefensePlayerName == score.TeamBlueDefensePlayer);
-                var redTeam = teams.FirstOrDefault(x => x.OffensePlayerName == score.TeamRedOffensePlayer && x.DefensePlayerName == score.TeamRedDefensePlayer);
-                if (blueTeam == null)
+                if (team.BlueTeam.Count <= 1 || team.RedTeam.Count <= 1)
                 {
-                    blueTeam = new TeamAndScore
-                    {
-                        OffensePlayerName = score.TeamBlueOffensePlayer,
-                        DefensePlayerName = score.TeamBlueDefensePlayer
-                    };
-                    teams.Add(blueTeam);
+                    // do nothing here, not support for single-player yet
                 }
-                if (redTeam == null)
+                else
                 {
-                    redTeam = new TeamAndScore
+                    var teamBlueResult = teamsResult.FirstOrDefault(x => x.DefensePlayerName == team.BlueTeam.ElementAt(1).Name && x.OffensePlayerName == team.BlueTeam.ElementAt(0).Name);
+                    if (teamBlueResult == null)
                     {
-                        OffensePlayerName = score.TeamRedOffensePlayer,
-                        DefensePlayerName = score.TeamRedDefensePlayer
-                    };
-                    teams.Add(redTeam);
-                }
+                        teamBlueResult = new TeamAndScore
+                        {
+                            DefensePlayerName = team.BlueTeam.ElementAt(1).Name,
+                            OffensePlayerName = team.BlueTeam.ElementAt(0).Name
+                        };
+                        teamsResult.Add(teamBlueResult);
+                    }
+                    var teamRedResult = teamsResult.FirstOrDefault(x => x.DefensePlayerName == team.RedTeam.ElementAt(1).Name && x.OffensePlayerName == team.RedTeam.ElementAt(0).Name);
+                    if (teamRedResult == null)
+                    {
+                        teamRedResult = new TeamAndScore
+                        {
+                            DefensePlayerName = team.RedTeam.ElementAt(1).Name,
+                            OffensePlayerName = team.RedTeam.ElementAt(0).Name
+                        };
+                        teamsResult.Add(teamRedResult);
+                    }
 
-                if (score.TeamBlueScore > score.TeamRedScore)
-                {
-                    blueTeam.Wins++;
-                    redTeam.Losses++;
-                }
-                else if (score.TeamBlueScore < score.TeamRedScore)
-                {
-                    blueTeam.Losses++;
-                    redTeam.Wins++;
+                    if (team.BlueWins)
+                    {
+                        teamBlueResult.Wins++;
+                        teamRedResult.Losses++;
+                    }
+                    else
+                    {
+                        teamBlueResult.Losses++;
+                        teamRedResult.Wins++;
+                    }
                 }
             }
+            BestTeams = teamsResult.OrderByDescending(x=>x.Ratio);
 
-            BestTeams = teams.OrderByDescending(x => x.Ratio);
+            #endregion
+
+            return this;
         }
 
         #region Output properties
@@ -106,23 +115,18 @@ namespace WuzlStats.ViewModels.Home
 
         #region Input properties
 
-        [Required]
-        public string TeamBlueOffensePlayer { get; set; }
+        public string BlueOffensePlayer { get; set; }
+        public string BlueDefensePlayer { get; set; }
+        public string BluePlayer { get; set; }
+
+        public string RedOffensePlayer { get; set; }
+        public string RedDefensePlayer { get; set; }
+        public string RedPlayer { get; set; }
 
         [Required]
-        public string TeamBlueDefensePlayer { get; set; }
-
+        public int BlueScore { get; set; }
         [Required]
-        public int TeamBlueScore { get; set; }
-
-        [Required]
-        public string TeamRedOffensePlayer { get; set; }
-
-        [Required]
-        public string TeamRedDefensePlayer { get; set; }
-
-        [Required]
-        public int TeamRedScore { get; set; }
+        public int RedScore { get; set; }
 
         #endregion
 
