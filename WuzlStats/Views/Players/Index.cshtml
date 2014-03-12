@@ -1,10 +1,13 @@
 ﻿@model WuzlStats.ViewModels.Players.IndexViewModel
 
+<p>These are all the players. Ever.<br />No one will be forgotten. Shame and fame will last till the very end of days, or at least until a database crash with no backups.</p>
+
 <table class="table table-striped">
     <tr>
         <th>Player</th>
-        <th>Last played</th>
-        <th>Times played</th>
+        <th>Last game</th>
+        <th>Played in a team</th>
+        <th>Played alone</th>
     </tr>
 
     @foreach (var p in Model.Players)
@@ -15,7 +18,10 @@
                 @p.LastPlayedDate.ToShortDateString()
             </td>
             <td>
-                @p.NumberOfGames
+                <span class="glyphicon glyphicon-thumbs-up"></span> @p.TeamGameWins &nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-down"></span> @p.TeamGameLosses
+            </td>
+            <td>
+                <span class="glyphicon glyphicon-thumbs-up"></span> @p.SingleGameWins &nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-down"></span> @p.SingleGameLosses
             </td>
         </tr>
     }
