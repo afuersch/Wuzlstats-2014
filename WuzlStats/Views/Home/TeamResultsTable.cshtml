@@ -1,9 +1,10 @@
-﻿@model IEnumerable<WuzlStats.ViewModels.Home.SingleResults.PlayerAndScore>
+﻿@model IEnumerable<WuzlStats.ViewModels.Home.TeamResult>
 
 <table class="table table-striped table-condensed">
     <tr>
         <th><span class="glyphicon glyphicon-thumbs-up"></span></th>
         <th><span class="glyphicon glyphicon-thumbs-down"></span></th>
+        <th></th>
         <th></th>
     </tr>
 
@@ -12,7 +13,8 @@
         <tr>
             <td>@(p.Wins)</td>
             <td>@(p.Losses)</td>
-            <td>@Html.ActionLink(p.PlayerName, "Index", "Player", new { playerName = p.PlayerName }, null)</td>
+            <td>@Html.ActionLink(p.OffensePlayerName, "Index", "Player", new { playerName = p.OffensePlayerName }, null)</td>
+            <td>@Html.ActionLink(p.DefensePlayerName, "Index", "Player", new { playerName = p.DefensePlayerName }, null)</td>
         </tr>
     }
 </table>

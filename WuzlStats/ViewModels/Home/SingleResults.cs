@@ -10,7 +10,6 @@ namespace WuzlStats.ViewModels.Home
         public SingleResults(Db db)
         {
             var minDate = DateTime.UtcNow.AddDays(-30);
-
             var games = from x in db.PlayerPositions
                         where x.Position == Position.Both && x.Game.DateTime >= minDate
                         select x;
@@ -18,7 +17,7 @@ namespace WuzlStats.ViewModels.Home
             var players = (from x in games
                            group x by x.Player.Name
                                into g
-                               select new PlayerAndScore
+                               select new PlayerResult
                                {
                                    PlayerName = g.Key,
                                    Wins = g.Count(y => (y.Team == Team.Blue && y.Game.BlueScore > y.Game.RedScore) || (y.Team == Team.Red && y.Game.BlueScore < y.Game.RedScore)),
@@ -29,43 +28,23 @@ namespace WuzlStats.ViewModels.Home
             WorstPlayers = players.OrderBy(x => x.Order);
             MostActivePlayers = players.OrderByDescending(x => x.Wins + x.Losses);
 
+            // ReSharper disable ConstantNullCoalescingCondition
             var goals = (from x in games
                          group x by x.Player.Name
                              into g
-                             select new PlayerAndScore
+                             select new PlayerResult
                              {
                                  PlayerName = g.Key,
                                  Wins = (g.Where(y => y.Team == Team.Blue).Sum(y => (int?)y.Game.BlueScore) ?? 0) + (g.Where(y => y.Team == Team.Red).Sum(y => (int?)y.Game.RedScore) ?? 0),
                                  Losses = (g.Where(y => y.Team == Team.Red).Sum(y => (int?)y.Game.BlueScore) ?? 0) + (g.Where(y => y.Team == Team.Blue).Sum(y => (int?)y.Game.RedScore) ?? 0),
                              }).ToList();
+            // ReSharper restore ConstantNullCoalescingCondition
             MostGoals = goals.OrderByDescending(x => x.Order);
         }
 
-        public IEnumerable<PlayerAndScore> BestPlayers { get; set; }
-        public IEnumerable<PlayerAndScore> WorstPlayers { get; set; }
-        public IEnumerable<PlayerAndScore> MostActivePlayers { get; set; }
-        public IEnumerable<PlayerAndScore> MostGoals { get; set; }
-
-        public class PlayerAndScore
-        {
-            public string PlayerName { get; set; }
-            public int Wins { get; set; }
-            public int Losses { get; set; }
-
-            public double Order
-            {
-                get
-                {
-                    var wins = (double)Wins;
-                    var losses = (double)Losses;
-
-                    if (losses <= 0)
-                        return wins;
-                    if (wins <= 0)
-                        return 0.1 / losses;
-                    return wins / losses;
-                }
-            }
-        }
+        public IEnumerable<PlayerResult> BestPlayers { get; set; }
+        public IEnumerable<PlayerResult> WorstPlayers { get; set; }
+        public IEnumerable<PlayerResult> MostActivePlayers { get; set; }
+        public IEnumerable<PlayerResult> MostGoals { get; set; }
     }
 }

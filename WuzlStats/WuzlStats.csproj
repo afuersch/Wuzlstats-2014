@@ -141,6 +141,8 @@
     <Compile Include="Models\Score.cs" />
     <Compile Include="ViewModels\Delete\IndexViewModel.cs" />
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Home\TeamResult.cs" />
+    <Compile Include="ViewModels\Home\PlayerResult.cs" />
     <Compile Include="ViewModels\Home\SingleResults.cs" />
     <Compile Include="ViewModels\Home\TeamResults.cs" />
     <Compile Include="ViewModels\Players\IndexViewModel.cs" />
@@ -179,8 +181,9 @@
     <Content Include="Views\Player\Index.cshtml" />
     <Content Include="Views\Player\PlayerStats.cshtml" />
     <Content Include="Views\Home\SinglesTab.cshtml" />
-    <Content Include="Views\Home\SinglesResultTable.cshtml" />
+    <Content Include="Views\Home\PlayerResultsTable.cshtml" />
     <Content Include="Views\Home\TeamsTab.cshtml" />
+    <Content Include="Views\Home\TeamResultsTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

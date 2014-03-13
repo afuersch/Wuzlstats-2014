@@ -44,11 +44,11 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label>Best players</label>
-                    @Html.Partial("SinglesResultTable", Model.SingleResults.BestPlayers.Take(5))
+                    @Html.Partial("PlayerResultsTable", Model.SingleResults.BestPlayers.Take(5))
                 </div>
                 <div class="col-sm-6">
                     <label>Worst players</label>
-                    @Html.Partial("SinglesResultTable", Model.SingleResults.WorstPlayers.Take(5))
+                    @Html.Partial("PlayerResultsTable", Model.SingleResults.WorstPlayers.Take(5))
                 </div>
             </div>
         </div>
@@ -57,11 +57,11 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label>Most active players</label>
-                    @Html.Partial("SinglesResultTable", Model.SingleResults.MostActivePlayers.Take(5))
+                    @Html.Partial("PlayerResultsTable", Model.SingleResults.MostActivePlayers.Take(5))
                 </div>
                 <div class="col-sm-6">
                     <label>Most gooooaals</label>
-                    @Html.Partial("SinglesResultTable", Model.SingleResults.MostGoals.Take(5))
+                    @Html.Partial("PlayerResultsTable", Model.SingleResults.MostGoals.Take(5))
                 </div>
             </div>
         </div>

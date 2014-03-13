@@ -10,165 +10,115 @@ namespace WuzlStats.ViewModels.Home
         public TeamResults(Db db)
         {
             var minDate = DateTime.UtcNow.AddDays(-30);
+            var games = from x in db.PlayerPositions
+                        where x.Game.DateTime >= minDate && (x.Position == Position.Defense || x.Position == Position.Offense)
+                        select x;
 
-            #region Player scores
+            CalculatePlayerResults(games);
+            CalculateTeamResults(games);
+        }
 
-            var playersAndScores = (from player in db.Players
-                                    let games = player.Games.Where(x => x.Game.DateTime >= minDate)
-                                    let wonGames = games.Where(x => (x.Game.BlueScore > x.Game.RedScore && x.Team == Team.Blue) || (x.Game.BlueScore < x.Game.RedScore && x.Team == Team.Red))
-                                    let lostGames = games.Where(x => (x.Game.BlueScore < x.Game.RedScore && x.Team == Team.Blue) || (x.Game.BlueScore > x.Game.RedScore && x.Team == Team.Red))
-                                    select new PlayerAndScore
+        private void CalculatePlayerResults(IQueryable<PlayerPosition> games)
+        {
+            var groupedGames = (from x in games
+                                group x by x.Player.Name
+                                    into g
+                                    select new
                                     {
-                                        Name = player.Name,
-                                        LossesDefense = lostGames.Count(x => x.Position == Position.Defense),
-                                        LossesOffense = lostGames.Count(x => x.Position == Position.Offense),
-                                        WinsDefense = wonGames.Count(x => x.Position == Position.Defense),
-                                        WinsOffense = wonGames.Count(x => x.Position == Position.Offense)
+                                        PlayerName = g.Key,
+                                        WinsAsDefense =
+                                            g.Count(x => x.Position == Position.Defense && ((x.Team == Team.Blue && x.Game.BlueScore > x.Game.RedScore) || (x.Team == Team.Red && x.Game.BlueScore < x.Game.RedScore))),
+                                        WinsAsOffense =
+                                            g.Count(x => x.Position == Position.Offense && ((x.Team == Team.Blue && x.Game.BlueScore > x.Game.RedScore) || (x.Team == Team.Red && x.Game.BlueScore < x.Game.RedScore))),
+                                        LossesAsDefense =
+                                            g.Count(x => x.Position == Position.Defense && ((x.Team == Team.Blue && x.Game.BlueScore < x.Game.RedScore) || (x.Team == Team.Red && x.Game.BlueScore > x.Game.RedScore))),
+                                        LossesAsOffense =
+                                            g.Count(x => x.Position == Position.Offense && ((x.Team == Team.Blue && x.Game.BlueScore < x.Game.RedScore) || (x.Team == Team.Red && x.Game.BlueScore > x.Game.RedScore)))
                                     }).ToList();
 
-            BestPlayers = playersAndScores.OrderByDescending(x => x.Ratio);
-            WorstPlayers = playersAndScores.OrderBy(x => x.Ratio);
+            BestPlayers = groupedGames.Select(x => new PlayerResult
+            {
+                PlayerName = x.PlayerName,
+                Wins = x.WinsAsDefense + x.WinsAsOffense,
+                Losses = x.LossesAsDefense + x.LossesAsOffense
+            }).OrderByDescending(x => x.Order);
+            WorstPlayers = BestPlayers.OrderBy(x => x.Order);
+            BestOffensePlayers = groupedGames.Select(x => new PlayerResult
+            {
+                PlayerName = x.PlayerName,
+                Wins = x.WinsAsOffense,
+                Losses = x.LossesAsOffense
+            }).OrderByDescending(x => x.Order);
+            BestDefensePlayers = groupedGames.Select(x => new PlayerResult
+            {
+                PlayerName = x.PlayerName,
+                Wins = x.WinsAsDefense,
+                Losses = x.LossesAsDefense
+            }).OrderByDescending(x => x.Order);
+            MostActivePlayers = groupedGames.Select(x => new PlayerResult
+            {
+                PlayerName = x.PlayerName,
+                Wins = x.WinsAsDefense + x.WinsAsOffense,
+                Losses = x.LossesAsDefense + x.LossesAsOffense
+            }).OrderByDescending(x => x.Wins + x.Losses);
+        }
 
-            BestOffensePlayers = playersAndScores.OrderByDescending(x => x.OffenseRatio);
-            BestDefensePlayers = playersAndScores.OrderByDescending(x => x.DefenseRatio);
+        private void CalculateTeamResults(IQueryable<PlayerPosition> games)
+        {
+            var teams = from game in games.Select(x => x.Game).Distinct()
+                        select new
+                        {
+                            BlueTeam = game.Players.Where(x => x.Team == Team.Blue).OrderBy(x => x.Position).Select(x => x.Player.Name),
+                            RedTeam = game.Players.Where(x => x.Team == Team.Red).OrderBy(x => x.Position).Select(x => x.Player.Name),
+                            BlueWins = game.BlueScore > game.RedScore
+                        };
 
-            MostActivePlayers = playersAndScores.OrderByDescending(x => x.WinsDefense + x.WinsOffense + x.LossesDefense + x.LossesOffense);
 
-            #endregion
-
-            #region Team scores
-
-            var teams = (from game in db.Games
-                         where game.DateTime >= minDate
-                         select new
-                         {
-                             BlueTeam = game.Players.Where(x => x.Team == Team.Blue).OrderBy(x => x.Position).Select(x => x.Player).ToList(),
-                             RedTeam = game.Players.Where(x => x.Team == Team.Red).OrderBy(x => x.Position).Select(x => x.Player).ToList(),
-                             BlueWins = game.BlueScore > game.RedScore
-                         }).ToList();
-
-            var teamsResult = new List<TeamAndScore>();
+            var teamsResult = new List<TeamResult>();
             foreach (var team in teams)
             {
-                if (team.BlueTeam.Count <= 1 || team.RedTeam.Count <= 1)
+                var teamBlueResult = teamsResult.FirstOrDefault(x => x.DefensePlayerName == team.BlueTeam.ElementAt(1) && x.OffensePlayerName == team.BlueTeam.ElementAt(0));
+                if (teamBlueResult == null)
                 {
-                    // do nothing here, not support for single-player yet
+                    teamBlueResult = new TeamResult
+                    {
+                        DefensePlayerName = team.BlueTeam.ElementAt(1),
+                        OffensePlayerName = team.BlueTeam.ElementAt(0)
+                    };
+                    teamsResult.Add(teamBlueResult);
+                }
+                var teamRedResult = teamsResult.FirstOrDefault(x => x.DefensePlayerName == team.RedTeam.ElementAt(1) && x.OffensePlayerName == team.RedTeam.ElementAt(0));
+                if (teamRedResult == null)
+                {
+                    teamRedResult = new TeamResult
+                    {
+                        DefensePlayerName = team.RedTeam.ElementAt(1),
+                        OffensePlayerName = team.RedTeam.ElementAt(0)
+                    };
+                    teamsResult.Add(teamRedResult);
+                }
+
+                if (team.BlueWins)
+                {
+                    teamBlueResult.Wins++;
+                    teamRedResult.Losses++;
                 }
                 else
                 {
-                    var teamBlueResult = teamsResult.FirstOrDefault(x => x.DefensePlayerName == team.BlueTeam.ElementAt(1).Name && x.OffensePlayerName == team.BlueTeam.ElementAt(0).Name);
-                    if (teamBlueResult == null)
-                    {
-                        teamBlueResult = new TeamAndScore
-                        {
-                            DefensePlayerName = team.BlueTeam.ElementAt(1).Name,
-                            OffensePlayerName = team.BlueTeam.ElementAt(0).Name
-                        };
-                        teamsResult.Add(teamBlueResult);
-                    }
-                    var teamRedResult = teamsResult.FirstOrDefault(x => x.DefensePlayerName == team.RedTeam.ElementAt(1).Name && x.OffensePlayerName == team.RedTeam.ElementAt(0).Name);
-                    if (teamRedResult == null)
-                    {
-                        teamRedResult = new TeamAndScore
-                        {
-                            DefensePlayerName = team.RedTeam.ElementAt(1).Name,
-                            OffensePlayerName = team.RedTeam.ElementAt(0).Name
-                        };
-                        teamsResult.Add(teamRedResult);
-                    }
-
-                    if (team.BlueWins)
-                    {
-                        teamBlueResult.Wins++;
-                        teamRedResult.Losses++;
-                    }
-                    else
-                    {
-                        teamBlueResult.Losses++;
-                        teamRedResult.Wins++;
-                    }
+                    teamBlueResult.Losses++;
+                    teamRedResult.Wins++;
                 }
             }
-            BestTeams = teamsResult.OrderByDescending(x => x.Ratio);
 
-            #endregion
+            BestTeams = teamsResult.OrderByDescending(x => x.Order);
         }
 
-        public IEnumerable<PlayerAndScore> BestPlayers { get; set; }
-        public IEnumerable<PlayerAndScore> WorstPlayers { get; set; }
-        public IEnumerable<PlayerAndScore> BestOffensePlayers { get; set; }
-        public IEnumerable<PlayerAndScore> BestDefensePlayers { get; set; }
+        public IEnumerable<PlayerResult> BestPlayers { get; set; }
+        public IEnumerable<PlayerResult> WorstPlayers { get; set; }
+        public IEnumerable<PlayerResult> BestOffensePlayers { get; set; }
+        public IEnumerable<PlayerResult> BestDefensePlayers { get; set; }
+        public IEnumerable<PlayerResult> MostActivePlayers { get; set; }
 
-        public IEnumerable<PlayerAndScore> MostActivePlayers { get; set; }
-        public IEnumerable<TeamAndScore> BestTeams { get; set; }
-
-        public class PlayerAndScore
-        {
-            public int WinsOffense { get; set; }
-            public int WinsDefense { get; set; }
-            public int LossesOffense { get; set; }
-            public int LossesDefense { get; set; }
-            public string Name { get; set; }
-
-            public double Ratio
-            {
-                get
-                {
-                    var wins = (double)WinsOffense + WinsDefense;
-                    var losses = (double)LossesOffense + LossesDefense;
-
-                    if (losses > 0)
-                        return wins / losses;
-                    return wins;
-                }
-            }
-
-            public double OffenseRatio
-            {
-                get
-                {
-                    var wins = (double)WinsOffense;
-                    var losses = (double)LossesOffense;
-
-                    if (losses > 0)
-                        return wins / losses;
-                    return wins;
-                }
-            }
-
-            public double DefenseRatio
-            {
-                get
-                {
-                    var wins = (double)WinsDefense;
-                    var losses = (double)LossesDefense;
-
-                    if (losses > 0)
-                        return wins / losses;
-                    return wins;
-                }
-            }
-        }
-
-        public class TeamAndScore
-        {
-            public int Wins { get; set; }
-            public int Losses { get; set; }
-            public string OffensePlayerName { get; set; }
-            public string DefensePlayerName { get; set; }
-
-            public double Ratio
-            {
-                get
-                {
-                    var wins = (double)Wins;
-                    var losses = (double)Losses;
-
-                    if (losses > 0)
-                        return wins / losses;
-                    return wins;
-                }
-            }
-        }
+        public IEnumerable<TeamResult> BestTeams { get; set; }
     }
 }
