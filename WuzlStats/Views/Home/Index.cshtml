@@ -1,6 +1,5 @@
 ﻿@model WuzlStats.ViewModels.Home.IndexViewModel
 
-
 <ul class="nav nav-tabs">
     <li class="active"><a href="#teams" data-toggle="tab">Teams (2 vs. 2)</a></li>
     <li><a href="#singles" data-toggle="tab">Singles (1 vs. 1)</a></li>
@@ -37,5 +36,63 @@
                 $('.nav').find('a[href="' + window.location.hash + '"]').tab('show');
             }
         });
+
+        @* ReSharper disable Html.IdNotResolved *@
+        $("#teams form").submit(function () {
+            localStorage.blueOffensePlayer = $("#BlueOffensePlayer").val();
+            localStorage.blueDefensePlayer = $("#BlueDefensePlayer").val();
+            localStorage.redOffensePlayer = $("#RedOffensePlayer").val();
+            localStorage.redDefensePlayer = $("#RedDefensePlayer").val();
+        });
+
+        $("#singles form").submit(function () {
+            localStorage.bluePlayer = $("#BluePlayer").val();
+            localStorage.redPlayer = $("#RedPlayer").val();
+        });
+
+        $(document).ready(function () {
+            if ($("#BlueDefensePlayer").val() == "")
+                $("#BlueDefensePlayer").val(localStorage.blueDefensePlayer);
+            if ($("#BlueOffensePlayer").val() == "")
+                $("#BlueOffensePlayer").val(localStorage.blueOffensePlayer);
+            if ($("#RedDefensePlayer").val() == "")
+                $("#RedDefensePlayer").val(localStorage.redDefensePlayer);
+            if ($("#RedOffensePlayer").val() == "")
+                $("#RedOffensePlayer").val(localStorage.redOffensePlayer);
+
+            if ($("#BluePlayer").val() == "")
+                $("#BluePlayer").val(localStorage.bluePlayer);
+            if ($("#RedPlayer").val() == "")
+                $("#RedPlayer").val(localStorage.redPlayer);
+        });
+
+        $("#switchSingles").click(function() {
+            var bluePlayer = $("#BluePlayer").val();
+            $("#BluePlayer").val($("#RedPlayer").val());
+            $("#RedPlayer").val(bluePlayer);
+        });
+        
+        $("#switchTeams").click(function () {
+            var blueOffensePlayer = $("#BlueOffensePlayer").val();
+            var blueDefensePlayer = $("#BlueDefensePlayer").val();
+            $("#BlueOffensePlayer").val($("#RedOffensePlayer").val());
+            $("#BlueDefensePlayer").val($("#RedDefensePlayer").val());
+            $("#RedOffensePlayer").val(blueOffensePlayer);
+            $("#RedDefensePlayer").val(blueDefensePlayer);
+        });
+        
+        $("#switchBlueTeam").click(function () {
+            var offense = $("#BlueOffensePlayer").val();
+            $("#BlueOffensePlayer").val($("#BlueDefensePlayer").val());
+            $("#BlueDefensePlayer").val(offense);
+        });
+        
+        $("#switchRedTeam").click(function () {
+            var offense = $("#RedOffensePlayer").val();
+            $("#RedOffensePlayer").val($("#RedDefensePlayer").val());
+            $("#RedDefensePlayer").val(offense);
+        });
+
+        @* ReSharper restore Html.IdNotResolved *@
     </script>
 }

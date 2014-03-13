@@ -22,12 +22,20 @@
                     @Html.TextBoxFor(x => x.RedPlayer, new { placeholder = "Red Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
                 </div>
             </div>
-            <p style="margin-top: 20px; text-align: center;">
-                <button type="submit" class="btn btn-primary" style="width:33%;">Save Score</button>
-            </p>
+            <div class="row" style="margin-bottom: 15px;">
+                <div class="col-xs-4">
+                </div>
+
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Save Score</button>
+                </div>
+                <div class="col-xs-4" style="text-align: center;">
+                    <span id="switchSingles" class="glyphicon glyphicon-transfer" style="color: #e3e3e3; cursor: pointer; font-size: 1.5em; margin-top: 0.25em;" title="Swap players"></span>
+                </div>
+            </div>
         }
 
-        <div class="well hidden-sm hidden-xs" style="margin-top:289px;">
+        <div class="well hidden-sm hidden-xs" style="margin-top:310px;">
             <div class="pull-right"><span style="padding-left: 30px;">@Html.ActionLink("Delete score", "Index", "Delete")</span></div>
             <p>
                 All stats only include the scores of the last 30 days. Also, ties are for pussies and are not counted at all.

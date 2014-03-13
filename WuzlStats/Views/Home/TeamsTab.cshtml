@@ -27,12 +27,22 @@
                     @Html.TextBoxFor(x => x.RedDefensePlayer, new { placeholder = "Defense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })
                 </div>
             </div>
-            <p style="margin-top: 20px; text-align: center;">
-                <button type="submit" class="btn btn-primary" style="width:33%;">Save Score</button>
-            </p>
+
+            <div class="row" style="margin-bottom: 15px;">
+                <div class="col-xs-4" style="text-align: center;">
+                    <span id="switchBlueTeam" class="glyphicon glyphicon-sort" style="color: #e3e3e3; cursor: pointer; font-size: 1.5em; margin-top: 0.25em;" title="Swap blue team positions"></span>
+                </div>
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Save Score</button>
+                </div>
+                <div class="col-xs-4" style="text-align: center;">
+                    <span id="switchTeams" class="glyphicon glyphicon-transfer" style="color: #e3e3e3; cursor: pointer; font-size: 1.5em; margin-top: 0.25em;" title="Swap players"></span>
+                    <span id="switchRedTeam" class="glyphicon glyphicon-sort" style="color: #e3e3e3; cursor: pointer; font-size: 1.5em; margin-top: 0.25em;" title="Swap red team positions"></span>
+                </div>
+            </div>
         }
 
-        <div class="well hidden-sm hidden-xs" style="margin-top:13px;">
+        <div class="well hidden-sm hidden-xs" style="margin-top: 33px;">
             <div class="pull-right"><span style="padding-left: 30px;">@Html.ActionLink("Delete score", "Index", "Delete")</span></div>
             <p>
                 All stats only include the scores of the last 30 days. Also, ties are for pussies and are not counted at all.
