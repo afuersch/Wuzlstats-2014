@@ -15,7 +15,6 @@ namespace WuzlStats.ViewModels.Home
                         where x.Position == Position.Both && x.Game.DateTime >= minDate
                         select x;
 
-
             var players = (from x in games
                            group x by x.Player.Name
                                into g
@@ -29,11 +28,23 @@ namespace WuzlStats.ViewModels.Home
             BestPlayers = players.OrderByDescending(x => x.Order);
             WorstPlayers = players.OrderBy(x => x.Order);
             MostActivePlayers = players.OrderByDescending(x => x.Wins + x.Losses);
+
+            var goals = (from x in games
+                         group x by x.Player.Name
+                             into g
+                             select new PlayerAndScore
+                             {
+                                 PlayerName = g.Key,
+                                 Wins = (g.Where(y => y.Team == Team.Blue).Sum(y => (int?)y.Game.BlueScore) ?? 0) + (g.Where(y => y.Team == Team.Red).Sum(y => (int?)y.Game.RedScore) ?? 0),
+                                 Losses = (g.Where(y => y.Team == Team.Red).Sum(y => (int?)y.Game.BlueScore) ?? 0) + (g.Where(y => y.Team == Team.Blue).Sum(y => (int?)y.Game.RedScore) ?? 0),
+                             }).ToList();
+            MostGoals = goals.OrderByDescending(x => x.Order);
         }
 
         public IEnumerable<PlayerAndScore> BestPlayers { get; set; }
         public IEnumerable<PlayerAndScore> WorstPlayers { get; set; }
         public IEnumerable<PlayerAndScore> MostActivePlayers { get; set; }
+        public IEnumerable<PlayerAndScore> MostGoals { get; set; }
 
         public class PlayerAndScore
         {

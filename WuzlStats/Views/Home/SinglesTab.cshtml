@@ -33,7 +33,7 @@
                 All stats only include the scores of the last 30 days. Also, ties are for pussies and are not counted at all.
             </p>
             <p>
-                If you're curious about how the highly sophisticated ranking algorithm for best and worst players work, here's it:
+                If you're curious about how the highly sophisticated ranking algorithm for best/worst players and most goals work, here's it:
                 <code>losses == 0 ? wins : (wins == 0 ? 0.1 / losses : wins / losses)</code>
             </p>
         </div>
@@ -60,7 +60,8 @@
                     @Html.Partial("SinglesResultTable", Model.SingleResults.MostActivePlayers.Take(5))
                 </div>
                 <div class="col-sm-6">
-
+                    <label>Most gooooaals</label>
+                    @Html.Partial("SinglesResultTable", Model.SingleResults.MostGoals.Take(5))
                 </div>
             </div>
         </div>
