@@ -2,227 +2,17 @@
 
 
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#teamMode" data-toggle="tab">Teams (2 vs. 2)</a></li>
-    <li><a href="#singleMode" data-toggle="tab">Singles (1 vs. 1)</a></li>
+    <li class="active"><a href="#teams" data-toggle="tab">Teams (2 vs. 2)</a></li>
+    <li><a href="#singles" data-toggle="tab">Singles (1 vs. 1)</a></li>
 </ul>
 
 <div class="tab-content" style="padding-top:10px;">
-    <div class="tab-pane active fade in" id="teamMode">
-        <div class="row">
-            <div class="col-md-6">
-
-                @using (Html.BeginForm("Teams", "Home"))
-                {
-
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <label>Blue Team</label>
-                            @Html.TextBoxFor(x => x.BlueOffensePlayer, new { placeholder = "Offense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
-                            @Html.TextBoxFor(x => x.BlueDefensePlayer, new { placeholder = "Defense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })
-                        </div>
-                        <div class="col-xs-4" style="font-size: 1.5em; margin-top:40px; padding:0;">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    @Html.TextBoxFor(x => x.BlueScore, new { required = "required", style = "max-width:50px; font-size: 1em; height: 2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
-                                </div>
-                                <div class="col-xs-6">
-                                    @Html.TextBoxFor(x => x.RedScore, new { required = "required", style = "max-width:50px; font-size: 1em; height:2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
-                            <label>Red Team</label>
-                            @Html.TextBoxFor(x => x.RedOffensePlayer, new { placeholder = "Offense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
-                            @Html.TextBoxFor(x => x.RedDefensePlayer, new { placeholder = "Defense Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })
-                        </div>
-                    </div>
-                    <p style="margin-top: 20px; text-align: center;">
-                        <button type="submit" class="btn btn-primary" style="width:33%;">Save Score</button>
-                    </p>
-                }
-
-                <div class="well" style="margin-top:49px;">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label>Most active players</label>
-                            <table class="table table-striped table-condensed">
-                                <tr>
-                                    <th><span class="glyphicon glyphicon-thumbs-up"></span></th>
-                                    <th><span class="glyphicon glyphicon-thumbs-down"></span></th>
-                                    <th></th>
-                                </tr>
-
-                                @foreach (var p in Model.MostActivePlayers.Take(9))
-                                {
-                                    <tr>
-                                        <td>@(p.WinsOffense + p.WinsDefense)</td>
-                                        <td>@(p.LossesOffense + p.LossesDefense)</td>
-                                        <td>@Html.ActionLink(p.Name, "Index", "Player", new { playerName = p.Name }, null)</td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                        <div class="col-sm-6">
-                            <label>Best teams</label>
-                            <table class="table table-striped table-condensed">
-                                <tr>
-                                    <th><span class="glyphicon glyphicon-thumbs-up"></span></th>
-                                    <th><span class="glyphicon glyphicon-thumbs-down"></span></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-
-                                @foreach (var p in Model.BestTeams.Take(9))
-                                {
-                                    <tr>
-                                        <td>@(p.Wins)</td>
-                                        <td>@(p.Losses)</td>
-                                        <td>@Html.ActionLink(p.OffensePlayerName, "Index", "Player", new { playerName = p.OffensePlayerName }, null)</td>
-                                        <td>@Html.ActionLink(p.DefensePlayerName, "Index", "Player", new { playerName = p.DefensePlayerName }, null)</td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-                <div class="hidden-sm hidden-xs">
-                    <div class="pull-right"><small style="padding-left: 30px;">@Html.ActionLink("Delete score", "Index", "Delete")</small></div>
-                    <p>
-                        <small>All stats only include the scores of the last 30 days. Also, ties are for pussies and are not counted at all.</small>
-                    </p>
-                </div>
-
-                <div class="well">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label>Best players</label>
-                            <table class="table table-striped table-condensed">
-                                <tr>
-                                    <th><span class="glyphicon glyphicon-thumbs-up"></span></th>
-                                    <th><span class="glyphicon glyphicon-thumbs-down"></span></th>
-                                    <th></th>
-                                </tr>
-
-                                @foreach (var p in Model.BestPlayers.Take(5))
-                                {
-                                    <tr>
-                                        <td>@(p.WinsOffense + p.WinsDefense)</td>
-                                        <td>@(p.LossesOffense + p.LossesDefense)</td>
-                                        <td>@Html.ActionLink(p.Name, "Index", "Player", new { playerName = p.Name }, null)</td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                        <div class="col-sm-6">
-                            <label>Worst players</label>
-                            <table class="table table-striped table-condensed">
-                                <tr>
-                                    <th><span class="glyphicon glyphicon-thumbs-up"></span></th>
-                                    <th><span class="glyphicon glyphicon-thumbs-down"></span></th>
-                                    <th></th>
-                                </tr>
-
-                                @foreach (var p in Model.WorstPlayers.Take(5))
-                                {
-                                    <tr>
-                                        <td>@(p.WinsOffense + p.WinsDefense)</td>
-                                        <td>@(p.LossesOffense + p.LossesDefense)</td>
-                                        <td>@Html.ActionLink(p.Name, "Index", "Player", new { playerName = p.Name }, null)</td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="well">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label>Best offense players</label>
-                            <table class="table table-striped table-condensed">
-                                <tr>
-                                    <th><span class="glyphicon glyphicon-thumbs-up"></span></th>
-                                    <th><span class="glyphicon glyphicon-thumbs-down"></span></th>
-                                    <th></th>
-                                </tr>
-
-                                @foreach (var p in Model.BestOffensePlayers.Take(5))
-                                {
-                                    <tr>
-                                        <td>@(p.WinsOffense)</td>
-                                        <td>@(p.LossesOffense)</td>
-                                        <td>@Html.ActionLink(p.Name, "Index", "Player", new { playerName = p.Name }, null)</td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                        <div class="col-sm-6">
-                            <label>Best defense players</label>
-                            <table class="table table-striped table-condensed">
-                                <tr>
-                                    <th><span class="glyphicon glyphicon-thumbs-up"></span></th>
-                                    <th><span class="glyphicon glyphicon-thumbs-down"></span></th>
-                                    <th></th>
-                                </tr>
-
-                                @foreach (var p in Model.BestDefensePlayers.Take(5))
-                                {
-                                    <tr>
-                                        <td>@(p.WinsDefense)</td>
-                                        <td>@(p.LossesDefense)</td>
-                                        <td>@Html.ActionLink(p.Name, "Index", "Player", new { playerName = p.Name }, null)</td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="tab-pane active fade in" id="teams">
+        @Html.Partial("TeamsTab")
     </div>
 
-    <div class="tab-pane fade" id="singleMode">
-        <div class="row">
-            <div class="col-md-6">
-                @using (Html.BeginForm("Singles", "Home"))
-                {
-                    <div class="row">
-                        <div class="col-xs-4" style="margin-top:3px;">
-                            @Html.TextBoxFor(x => x.BluePlayer, new { placeholder = "Blue Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
-                        </div>
-                        <div class="col-xs-4" style="font-size: 1.5em; padding:0;">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    @Html.TextBoxFor(x => x.BlueScore, new { required = "required", style = "max-width:50px; font-size: 1em; height: 2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
-                                </div>
-                                <div class="col-xs-6">
-                                    @Html.TextBoxFor(x => x.RedScore, new { required = "required", style = "max-width:50px; font-size: 1em; height:2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-4" style="margin-top:3px;">
-                            @Html.TextBoxFor(x => x.RedPlayer, new { placeholder = "Red Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
-                        </div>
-                    </div>
-                    <p style="margin-top: 20px; text-align: center;">
-                        <button type="submit" class="btn btn-primary" style="width:33%;">Save Score</button>
-                    </p>
-                }
-            </div>
-
-            <div class="col-md-6">
-                <div class="pull-right"><small style="padding-left: 30px;">@Html.ActionLink("Delete score", "Index", "Delete")</small></div>
-                <p>
-                    <small>Sorry, no statistics yet for 1-vs-1-games. But you can add your scores already, so they won't get lost. You can also take a look at the "Players" section that already supports 1-vs-1 games.</small>
-                </p>
-            </div>
-        </div>
+    <div class="tab-pane fade" id="singles">
+        @Html.Partial("SinglesTab")
     </div>
 </div>
 
@@ -232,3 +22,20 @@
         <option value="@p"></option>
     }
 </datalist>
+
+@section scripts
+{
+    <script>
+        $('.nav').on('click', 'a', function (e) {
+            e.preventDefault();
+            window.location.hash = $(this).attr('href');
+            $(this).tab('show');
+        })
+
+        $(document).ready(function () {
+            if (window.location.hash) {
+                $('.nav').find('a[href="' + window.location.hash + '"]').tab('show');
+            }
+        });
+    </script>
+}

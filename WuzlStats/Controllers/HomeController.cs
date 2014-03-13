@@ -95,10 +95,10 @@ namespace WuzlStats.Controllers
                 });
                 _db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return Redirect(Url.Action("Index") + "#singles");
             }
 
-            return View("Index");
+            return Redirect(Url.Action("Index") + "#singles");
         }
 
         private string NormalizeName(string name)

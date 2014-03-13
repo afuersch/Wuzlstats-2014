@@ -1,0 +1,69 @@
+﻿@model WuzlStats.ViewModels.Home.IndexViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Singles", "Home"))
+        {
+            <div class="row">
+                <div class="col-xs-4" style="margin-top:3px;">
+                    @Html.TextBoxFor(x => x.BluePlayer, new { placeholder = "Blue Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
+                </div>
+                <div class="col-xs-4" style="font-size: 1.5em; padding:0;">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            @Html.TextBoxFor(x => x.BlueScore, new { required = "required", style = "max-width:50px; font-size: 1em; height: 2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
+                        </div>
+                        <div class="col-xs-6">
+                            @Html.TextBoxFor(x => x.RedScore, new { required = "required", style = "max-width:50px; font-size: 1em; height:2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4" style="margin-top:3px;">
+                    @Html.TextBoxFor(x => x.RedPlayer, new { placeholder = "Red Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
+                </div>
+            </div>
+            <p style="margin-top: 20px; text-align: center;">
+                <button type="submit" class="btn btn-primary" style="width:33%;">Save Score</button>
+            </p>
+        }
+
+        <div class="well hidden-sm hidden-xs" style="margin-top:289px;">
+            <div class="pull-right"><span style="padding-left: 30px;">@Html.ActionLink("Delete score", "Index", "Delete")</span></div>
+            <p>
+                All stats only include the scores of the last 30 days. Also, ties are for pussies and are not counted at all.
+            </p>
+            <p>
+                If you're curious about how the highly sophisticated ranking algorithm for best and worst players work, here's it:
+                <code>losses == 0 ? wins : (wins == 0 ? 0.1 / losses : wins / losses)</code>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="well">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Best players</label>
+                    @Html.Partial("SinglesResultTable", Model.SingleResults.BestPlayers.Take(5))
+                </div>
+                <div class="col-sm-6">
+                    <label>Worst players</label>
+                    @Html.Partial("SinglesResultTable", Model.SingleResults.WorstPlayers.Take(5))
+                </div>
+            </div>
+        </div>
+
+        <div class="well">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Most active players</label>
+                    @Html.Partial("SinglesResultTable", Model.SingleResults.MostActivePlayers.Take(5))
+                </div>
+                <div class="col-sm-6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
