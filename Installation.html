@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wuzlstats : Because we all need to track the Wuzl score at the office</title>
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="Content/Style.css">
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="Index.html">Wuzlstats</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="Index.html">About</a></li>
+                    <li class="active"><a href="Installation.html">Installation</a></li>
+                    <li><a href="Download.html">Download</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>What are the system requirements for Wuzlstats?</h2>
+        <p>Wuzlstats is an ASP.NET MVC web application and requires IIS, .NET 4.5.1 and SQL Server to run.</p>
+        
+        <h2>Is there an easy way to get Wuzlstats running?</h2>         
+        <p>
+            Absolutely. The easiest way by far is to use the <u>free tier</u> of Windows Azure to host it for you. This can be done directly from a GitHub repository, so you don't require anything at all on your workstation:
+            <ol>
+                <li><a href="https://github.com/saxx/Wuzlstats/fork">Create a fork</a> of the Wuzlstats repository on GitHub.</li>
+                <li>Login in to the <a href="https://manage.windowsazure.com/">Windows Azure management portal</a> (or create an account there, if you don't have one yet).</li>
+                <li>Click <i>New</i> &raquo; <i>Compute</i> &raquo; <i>Website</i> &raquo; <i>Custom Create</i>.</li>
+                <li>Choose the name and region you like.</li>
+                <li>Select <i>Create a free 20 MB SQL database</i>. Use <code>Db</code> as connection string name.</li>
+                <li>Check <i>Publish from source control</i>.</li>
+                <li>Choose the database settings you like.</li>
+                <li>Select GitHub as your source code provider. Log in to GitHub and select the repository you created in step 1.</li>
+                <li>Done. Wait a few seconds and your very own Wuzlstats instance should be up and running.</li>
+            </ol>
+        </p>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-3250157-9', 'saxx.github.io');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
