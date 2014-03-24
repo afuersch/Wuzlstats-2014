@@ -25,32 +25,46 @@
 @section scripts
 {
     <script>
-        $('.nav').on('click', 'a', function (e) {
+        $('.nav').on('click', 'a', function(e) {
             e.preventDefault();
             window.location.hash = $(this).attr('href');
             $(this).tab('show');
-        })
+        });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             if (window.location.hash) {
                 $('.nav').find('a[href="' + window.location.hash + '"]').tab('show');
             }
         });
 
-        @* ReSharper disable Html.IdNotResolved *@
-        $("#teams form").submit(function () {
+                @* ReSharper disable Html.IdNotResolved *@
+        $("#teams form").submit(function() {
             localStorage.blueOffensePlayer = $("#BlueOffensePlayer").val();
             localStorage.blueDefensePlayer = $("#BlueDefensePlayer").val();
             localStorage.redOffensePlayer = $("#RedOffensePlayer").val();
             localStorage.redDefensePlayer = $("#RedDefensePlayer").val();
+            localStorage.lastSave = new Date().getTime();
         });
 
-        $("#singles form").submit(function () {
+        $("#singles form").submit(function() {
             localStorage.bluePlayer = $("#BluePlayer").val();
             localStorage.redPlayer = $("#RedPlayer").val();
+            localStorage.lastSave = new Date().getTime();
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
+            var minLastSaveDate = new Date();
+            minLastSaveDate.setHours(minLastSaveDate.getHours() - 3);
+
+            if (!localStorage.lastSave || localStorage.lastSave < minLastSaveDate.getTime()) {
+                localStorage.blueOffensePlayer = "";
+                localStorage.blueDefensePlayer = "";
+                localStorage.redOffensePlayer = "";
+                localStorage.redDefensePlayer = "";
+                localStorage.bluePlayer = "";
+                localStorage.redPlayer = "";
+            }
+
             if ($("#BlueDefensePlayer").val() == "")
                 $("#BlueDefensePlayer").val(localStorage.blueDefensePlayer);
             if ($("#BlueOffensePlayer").val() == "")
@@ -64,6 +78,15 @@
                 $("#BluePlayer").val(localStorage.bluePlayer);
             if ($("#RedPlayer").val() == "")
                 $("#RedPlayer").val(localStorage.redPlayer);
+
+            if ($("#BlueOffensePlayer").val() == "") {
+                $("#switchTeams").hide();
+                $("#switchBlueTeam").hide();
+                $("#switchRedTeam").hide();
+            }
+
+            if ($("#BluePlayer").val() == "")
+                $("#switchSingles").hide();
         });
 
         $("#switchSingles").click(function() {
@@ -71,8 +94,8 @@
             $("#BluePlayer").val($("#RedPlayer").val());
             $("#RedPlayer").val(bluePlayer);
         });
-        
-        $("#switchTeams").click(function () {
+
+        $("#switchTeams").click(function() {
             var blueOffensePlayer = $("#BlueOffensePlayer").val();
             var blueDefensePlayer = $("#BlueDefensePlayer").val();
             $("#BlueOffensePlayer").val($("#RedOffensePlayer").val());
@@ -80,19 +103,19 @@
             $("#RedOffensePlayer").val(blueOffensePlayer);
             $("#RedDefensePlayer").val(blueDefensePlayer);
         });
-        
-        $("#switchBlueTeam").click(function () {
+
+        $("#switchBlueTeam").click(function() {
             var offense = $("#BlueOffensePlayer").val();
             $("#BlueOffensePlayer").val($("#BlueDefensePlayer").val());
             $("#BlueDefensePlayer").val(offense);
         });
-        
-        $("#switchRedTeam").click(function () {
+
+        $("#switchRedTeam").click(function() {
             var offense = $("#RedOffensePlayer").val();
             $("#RedOffensePlayer").val($("#RedDefensePlayer").val());
             $("#RedDefensePlayer").val(offense);
         });
 
-        @* ReSharper restore Html.IdNotResolved *@
+            @* ReSharper restore Html.IdNotResolved *@
     </script>
 }
