@@ -60,7 +60,7 @@ namespace WuzlStats.Controllers
 
                 _db.SaveChanges();
 
-                return Redirect(Url.Action("Index") + "#teams?saved");
+                return Redirect(Url.Action("Index") + "?saved#teams");
             }
 
             return Redirect(Url.Action("Index") + "#teams");
@@ -95,7 +95,7 @@ namespace WuzlStats.Controllers
                 });
                 _db.SaveChanges();
 
-                return Redirect(Url.Action("Index") + "#singles?saved");
+                return Redirect(Url.Action("Index") + "?saved#singles");
             }
 
             return Redirect(Url.Action("Index") + "#singles");
