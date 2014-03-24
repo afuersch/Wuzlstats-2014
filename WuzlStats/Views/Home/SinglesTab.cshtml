@@ -6,20 +6,20 @@
         {
             <div class="row">
                 <div class="col-xs-4" style="margin-top:3px;">
-                    @Html.TextBoxFor(x => x.BluePlayer, new { placeholder = "Blue Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
+                    @Html.TextBoxFor(x => x.BluePlayer, new { placeholder = "Blue Player", required = "required", @class = "form-control blueTeam", list = "players", autocomplete = "off", style = "width:100%;", @title="Blue Player" })<br />
                 </div>
                 <div class="col-xs-4" style="font-size: 1.5em; padding:0;">
                     <div class="row">
                         <div class="col-xs-6">
-                            @Html.TextBoxFor(x => x.BlueScore, new { required = "required", style = "max-width:50px; font-size: 1em; height: 2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
+                            @Html.TextBoxFor(x => x.BlueScore, new { required = "required", style = "max-width:50px; font-size: 1em; height: 2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control blueTeam", title="Blue Score" })
                         </div>
                         <div class="col-xs-6">
-                            @Html.TextBoxFor(x => x.RedScore, new { required = "required", style = "max-width:50px; font-size: 1em; height:2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control" })
+                            @Html.TextBoxFor(x => x.RedScore, new { required = "required", style = "max-width:50px; font-size: 1em; height:2em; text-align:center; margin-right: auto; margin-left: auto;", @class = "form-control redTeam", title="Red Score" })
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-4" style="margin-top:3px;">
-                    @Html.TextBoxFor(x => x.RedPlayer, new { placeholder = "Red Player", required = "required", @class = "form-control", list = "players", autocomplete = "off", style = "width:100%;" })<br />
+                    @Html.TextBoxFor(x => x.RedPlayer, new { placeholder = "Red Player", required = "required", @class = "form-control redTeam", list = "players", autocomplete = "off", style = "width:100%;", title="Red Player" })<br />
                 </div>
             </div>
             <div class="row" style="margin-bottom: 15px;">
