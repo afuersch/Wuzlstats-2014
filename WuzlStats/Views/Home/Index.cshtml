@@ -22,6 +22,22 @@
     }
 </datalist>
 
+<div id="successModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center;">
+                <h4>Score saved</h4>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                @{
+                    var anim = "anim" + new Random().Next(1, 15) + ".gif";
+                }
+                <img src="~/Content/animations/@anim" alt=""/>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts
 {
     <script>
@@ -36,6 +52,14 @@
                 $('.nav').find('a[href="' + window.location.hash + '"]').tab('show');
             }
         });
+        
+        $(document).ready(function () {
+            if (window.location.toString().indexOf("?saved") > 0) {
+                $('#successModal').modal('show');
+                setTimeout('$("#successModal").modal("hide")', 7000);
+            }
+        });
+
 
                 @* ReSharper disable Html.IdNotResolved *@
         $("#teams form").submit(function() {

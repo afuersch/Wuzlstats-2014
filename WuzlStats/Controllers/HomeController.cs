@@ -60,10 +60,10 @@ namespace WuzlStats.Controllers
 
                 _db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return Redirect(Url.Action("Index") + "#teams?saved");
             }
 
-            return View("Index");
+            return Redirect(Url.Action("Index") + "#teams");
         }
 
         [HttpPost]
@@ -95,7 +95,7 @@ namespace WuzlStats.Controllers
                 });
                 _db.SaveChanges();
 
-                return Redirect(Url.Action("Index") + "#singles");
+                return Redirect(Url.Action("Index") + "#singles?saved");
             }
 
             return Redirect(Url.Action("Index") + "#singles");
