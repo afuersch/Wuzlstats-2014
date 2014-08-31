@@ -147,6 +147,7 @@
     <Compile Include="ViewModels\Home\TeamResults.cs" />
     <Compile Include="ViewModels\Players\IndexViewModel.cs" />
     <Compile Include="ViewModels\Player\IndexViewModel.cs" />
+    <Compile Include="ViewModels\ScoreViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animations\anim1.gif" />

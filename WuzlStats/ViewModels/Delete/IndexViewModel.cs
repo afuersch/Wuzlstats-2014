@@ -12,7 +12,7 @@ namespace WuzlStats.ViewModels.Delete
             var games = db.Games.OrderByDescending(x => x.DateTime).Take(50);
 
             Scores = (from game in games
-                      select new Score
+                      select new ScoreViewModel
                       {
                           Id = game.Id,
                           DateTime = game.DateTime,
@@ -32,19 +32,7 @@ namespace WuzlStats.ViewModels.Delete
             return this;
         }
 
-        public IEnumerable<Score> Scores { get; set; }
-
-        public class Score
-        {
-            public int Id { get; set; }
-            public DateTime DateTime { get; set; }
-            public IEnumerable<string> TeamBluePlayers { get; set; }
-            public IEnumerable<string> TeamRedPlayers { get; set; }
-            public string TeamBlue { get; set; }
-            public string TeamRed { get; set; }
-            public int BlueScore { get; set; }
-            public int RedScore { get; set; }
-        }
+        public IEnumerable<ScoreViewModel> Scores { get; set; }
 
     }
 }
