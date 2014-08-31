@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WuzlStats.Models;
 
@@ -16,6 +17,25 @@ namespace WuzlStats.ViewModels.Player
             LastPlayedDate = games.Max(x => x.Game.DateTime).ToLocalTime();
             AllTimeStats = Calculate(games);
             CurrentStats = Calculate(games.Where(x => x.Game.DateTime >= minDate));
+
+            var player = db.Players.FirstOrDefault(p => p.Name == playerName);
+
+            Scores = (from game in db.Games.Where(game => game.Players.FirstOrDefault(position => position.PlayerId == player.Id) != null).OrderByDescending(x => x.DateTime)
+                      select new ScoreViewModel
+                      {
+                          DateTime = game.DateTime,
+                          RedScore = game.RedScore,
+                          BlueScore = game.BlueScore,
+                          TeamBluePlayers = game.Players.Where(x => x.Team == Team.Blue).OrderBy(x => x.Position).Select(x => x.Player.Name).ToList(),
+                          TeamRedPlayers = game.Players.Where(x => x.Team == Team.Red).OrderBy(x => x.Position).Select(x => x.Player.Name).ToList(),
+                      }).ToList();
+
+            foreach (var s in Scores)
+            {
+                s.DateTime = s.DateTime.ToLocalTime();
+                s.TeamBlue = s.TeamBluePlayers.Aggregate("", (sum, current) => sum + " / " + current).Trim(' ', '/');
+                s.TeamRed = s.TeamRedPlayers.Aggregate("", (sum, current) => sum + " / " + current).Trim(' ', '/');
+            }
 
             return this;
         }
@@ -67,6 +87,7 @@ namespace WuzlStats.ViewModels.Player
         public DateTime LastPlayedDate { get; set; }
         public PlayerStats AllTimeStats { get; set; }
         public PlayerStats CurrentStats { get; set; }
+        public IEnumerable<ScoreViewModel> Scores { get; set; }
 
 
         public class PlayerStats
