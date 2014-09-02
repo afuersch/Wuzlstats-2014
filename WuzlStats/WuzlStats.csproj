@@ -198,7 +198,7 @@
     <Content Include="Views\Delete\Index.cshtml" />
     <Content Include="Views\Players\Index.cshtml" />
     <Content Include="Views\Player\Index.cshtml" />
-    <Content Include="Views\Player\PlayerStats.cshtml" />
+    <Content Include="Views\Player\TeamPlayerStats.cshtml" />
     <Content Include="Views\Home\SinglesTab.cshtml" />
     <Content Include="Views\Home\PlayerResultsTable.cshtml" />
     <Content Include="Views\Home\TeamsTab.cshtml" />
