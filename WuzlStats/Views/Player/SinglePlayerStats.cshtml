@@ -8,14 +8,19 @@
             <div class="col-sm-5">
                 <label>Games played:</label>
             </div>
-            <div class="col-sm-7"><span class="glyphicon glyphicon-thumbs-up"></span> @Model.WinsCount &nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-down"></span> @Model.LossesCount</div>
+            <div class="col-sm-7"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;@Model.WinsCount &nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-down"></span>&nbsp;@Model.LossesCount</div>
         </div>
 
         <div class="row">
             <div class="col-sm-5">
                 <label>Favorite team:</label>
             </div>
-            <div class="col-sm-7">@Model.FavoriteTeam</div>
+            <div class="col-sm-7">
+                @{
+                    var labelClass = Model.FavoriteTeam == "Red" ? "redTeam" : "blueTeam";
+                }
+                <span class="label @(labelClass)">@Model.FavoriteTeam</span>
+            </div>
         </div>
 
     </div>
