@@ -147,6 +147,8 @@
     <Compile Include="ViewModels\Home\TeamResults.cs" />
     <Compile Include="ViewModels\Players\IndexViewModel.cs" />
     <Compile Include="ViewModels\Player\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Player\IPlayerStats.cs" />
+    <Compile Include="ViewModels\Player\TeamPlayerStats.cs" />
     <Compile Include="ViewModels\ScoreViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

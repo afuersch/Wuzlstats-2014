@@ -40,9 +40,9 @@ namespace WuzlStats.ViewModels.Player
             return this;
         }
 
-        private PlayerStats Calculate(IQueryable<PlayerPosition> games)
+        private TeamPlayerStats Calculate(IQueryable<PlayerPosition> games)
         {
-            var result = new PlayerStats();
+            var result = new TeamPlayerStats();
 
             var blueWins = games.Where(x => x.Game.BlueScore > x.Game.RedScore).ToList();
             var redWins = games.Where(x => x.Game.BlueScore < x.Game.RedScore).ToList();
@@ -82,21 +82,11 @@ namespace WuzlStats.ViewModels.Player
             return result;
         }
 
-
         public string Name { get; set; }
         public DateTime LastPlayedDate { get; set; }
-        public PlayerStats AllTimeStats { get; set; }
-        public PlayerStats CurrentStats { get; set; }
+        public TeamPlayerStats AllTimeStats { get; set; }
+        public TeamPlayerStats CurrentStats { get; set; }
         public IEnumerable<ScoreViewModel> Scores { get; set; }
 
-
-        public class PlayerStats
-        {
-            public int WinsCount { get; set; }
-            public int LossesCount { get; set; }
-            public string FavoriteTeam { get; set; }
-            public string FavoritePartner { get; set; }
-            public string FavoritePosition { get; set; }
-        }
     }
 }
