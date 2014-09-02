@@ -1,0 +1,22 @@
+﻿@model WuzlStats.ViewModels.Player.SinglePlayerStats
+
+<div class="panel panel-default">
+    <div class="panel-heading">Single</div>
+    <div class="panel-body">
+
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Games played:</label>
+            </div>
+            <div class="col-sm-8"><span class="glyphicon glyphicon-thumbs-up"></span> @Model.WinsCount &nbsp;&nbsp; <span class="glyphicon glyphicon-thumbs-down"></span> @Model.LossesCount</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Favorite team:</label>
+            </div>
+            <div class="col-sm-8">@Model.FavoriteTeam</div>
+        </div>
+
+    </div>
+</div>

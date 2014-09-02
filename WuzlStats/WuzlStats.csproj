@@ -204,6 +204,7 @@
     <Content Include="Views\Home\PlayerResultsTable.cshtml" />
     <Content Include="Views\Home\TeamsTab.cshtml" />
     <Content Include="Views\Home\TeamResultsTable.cshtml" />
+    <Content Include="Views\Player\SinglePlayerStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
