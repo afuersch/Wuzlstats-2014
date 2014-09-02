@@ -170,6 +170,13 @@
     <Content Include="Content\animations\anim9.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+	<Content Include="Content\site.less" />
+    <Content Include="Content\site.min.css">
+      <DependentUpon>site.less</DependentUpon>
+    </Content>
+	<Content Include="Content\site.css">
+      <DependentUpon>site.less</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -188,7 +195,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />

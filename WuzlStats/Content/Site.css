@@ -1,11 +1,17 @@
-﻿body {
-    padding-top: 60px;
+body {
+  padding-top: 60px;
 }
-
 .redTeam {
-    background-color: #FFDDDD;
+  background-color: #ffdddd;
 }
-
 .blueTeam {
-    background-color: #DDDDFF;
+  background-color: #ddddff;
+}
+.panel .row {
+  margin-bottom: 0.5em;
+}
+.panel .label {
+  font-size: 100%;
+  font-weight: normal;
+  color: #333333;
 }
