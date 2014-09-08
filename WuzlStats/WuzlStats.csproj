@@ -147,6 +147,10 @@
     <Compile Include="ViewModels\Home\TeamResults.cs" />
     <Compile Include="ViewModels\Players\IndexViewModel.cs" />
     <Compile Include="ViewModels\Player\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Player\IPlayerStats.cs" />
+    <Compile Include="ViewModels\Player\SinglePlayerStats.cs" />
+    <Compile Include="ViewModels\Player\TeamPlayerStats.cs" />
+    <Compile Include="ViewModels\ScoreViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animations\anim1.gif" />
@@ -166,6 +170,13 @@
     <Content Include="Content\animations\anim9.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+	<Content Include="Content\site.less" />
+    <Content Include="Content\site.min.css">
+      <DependentUpon>site.less</DependentUpon>
+    </Content>
+	<Content Include="Content\site.css">
+      <DependentUpon>site.less</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -184,7 +195,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -195,11 +205,12 @@
     <Content Include="Views\Delete\Index.cshtml" />
     <Content Include="Views\Players\Index.cshtml" />
     <Content Include="Views\Player\Index.cshtml" />
-    <Content Include="Views\Player\PlayerStats.cshtml" />
+    <Content Include="Views\Player\TeamPlayerStats.cshtml" />
     <Content Include="Views\Home\SinglesTab.cshtml" />
     <Content Include="Views\Home\PlayerResultsTable.cshtml" />
     <Content Include="Views\Home\TeamsTab.cshtml" />
     <Content Include="Views\Home\TeamResultsTable.cshtml" />
+    <Content Include="Views\Player\SinglePlayerStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
