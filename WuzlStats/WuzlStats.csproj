@@ -170,11 +170,11 @@
     <Content Include="Content\animations\anim9.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-	<Content Include="Content\site.less" />
+    <Content Include="Content\site.less" />
     <Content Include="Content\site.min.css">
       <DependentUpon>site.less</DependentUpon>
     </Content>
-	<Content Include="Content\site.css">
+    <Content Include="Content\site.css">
       <DependentUpon>site.less</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
