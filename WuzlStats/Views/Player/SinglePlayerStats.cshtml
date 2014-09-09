@@ -16,10 +16,15 @@
                 <label>Favorite team:</label>
             </div>
             <div class="col-sm-7">
-                @{
+                @if (Model.FavoriteTeam == "None")
+                {
+                    <text>No favorite team</text>
+                } 
+                else
+                {
                     var labelClass = Model.FavoriteTeam == "Red" ? "redTeam" : "blueTeam";
+                    <span class="label @(labelClass)">@Model.FavoriteTeam</span>
                 }
-                <span class="label @(labelClass)">@Model.FavoriteTeam</span>
             </div>
         </div>
 

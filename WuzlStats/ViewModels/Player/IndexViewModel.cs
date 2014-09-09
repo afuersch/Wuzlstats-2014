@@ -96,7 +96,7 @@ namespace WuzlStats.ViewModels.Player
             var redCount = games.Count(x => x.Team == Team.Red);
             if (redCount == blueCount)
             {
-                playerStats.FavoriteTeam = "No favorite team";
+                playerStats.FavoriteTeam = "None";
             }
             else if (redCount < blueCount)
             {

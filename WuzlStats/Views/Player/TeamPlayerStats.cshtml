@@ -15,7 +15,7 @@
             <div class="col-sm-5">
                 <label>Favorite partner:</label>
             </div>
-            <div class="col-sm-7">@Model.FavoritePartner</div>
+            <div class="col-sm-7">@Html.ActionLink(Model.FavoritePartner, "Index", "Player", new { playerName = Model.FavoritePartner }, null)</div>
         </div>
 
         <div class="row">
@@ -23,10 +23,15 @@
                 <label>Favorite team:</label>
             </div>
             <div class="col-sm-7">
-                @{
+                @if (Model.FavoriteTeam == "None")
+                {
+                    <text>No favorite team</text>
+                } 
+                else
+                {
                     var labelClass = Model.FavoriteTeam == "Red" ? "redTeam" : "blueTeam";
+                    <span class="label @(labelClass)">@Model.FavoriteTeam</span>
                 }
-                <span class="label @(labelClass)">@Model.FavoriteTeam</span>
             </div>
         </div>
 
