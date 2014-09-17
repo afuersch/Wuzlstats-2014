@@ -9,5 +9,6 @@ namespace WuzlStats.ViewModels.Player
         int WinsCount { get; set; }
         int LossesCount { get; set; }
         string FavoriteTeam { get; set; }
+        string FavoriteOpponent { get; set; }
     }
 }
