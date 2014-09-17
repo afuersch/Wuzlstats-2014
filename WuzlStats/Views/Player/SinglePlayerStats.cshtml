@@ -27,6 +27,14 @@
                 }
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <label>Favorite opponent:</label>
+            </div>
+            <div class="col-sm-7">
+                @Html.ActionLink(Model.FavoriteOpponent, "Index", "Player", new { playerName = Model.FavoriteOpponent }, null)
+            </div>
+        </div>
 
     </div>
 </div>
