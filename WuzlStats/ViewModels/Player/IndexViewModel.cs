@@ -38,8 +38,8 @@ namespace WuzlStats.ViewModels.Player
             foreach (var s in Scores)
             {
                 s.DateTime = s.DateTime.ToLocalTime();
-                s.TeamBlue = s.TeamBluePlayers.Aggregate("", (sum, current) => sum + " / " + current).Trim(' ', '/');
-                s.TeamRed = s.TeamRedPlayers.Aggregate("", (sum, current) => sum + " / " + current).Trim(' ', '/');
+                s.TeamBlue = string.Join(" / ", s.TeamBluePlayers);
+                s.TeamRed = string.Join(" / ", s.TeamRedPlayers);
             }
 
             return this;
@@ -49,6 +49,16 @@ namespace WuzlStats.ViewModels.Player
         {
             var result = new SinglePlayerStats();
             Calculate(games, result);
+
+            var opponents = games.SelectMany(x => x.Game.Players.Where(y => y.Team != x.Team && y.Player != x.Player).Select(z => z.Player.Name)).ToList();
+
+            result.FavoriteOpponent = (from x in opponents
+                                       group x by x
+                                           into g
+                                           orderby g.Count() descending
+                                           select g.Key)
+                 .First();
+
             return result;
         }
 
@@ -80,6 +90,23 @@ namespace WuzlStats.ViewModels.Player
             {
                 result.FavoritePosition = "Defense";
             }
+
+            var opponents = (from players in
+                                 (from a in games.Select(x => x.Game.Players.Where(y => y.Team != x.Team && y.Player != x.Player))
+                                  select new
+                                  {
+                                      OffensePlayer = a.FirstOrDefault(p => p.Position == Position.Offense).Player.Name,
+                                      DefensePlayer = a.FirstOrDefault(p => p.Position == Position.Defense).Player.Name
+                                  })
+                             select players.OffensePlayer + " / " + players.DefensePlayer)
+                 .ToList();
+
+            result.FavoriteOpponent = (from x in opponents
+                                       group x by x
+                                           into g
+                                           orderby g.Count() descending
+                                           select g.Key)
+                 .First();
 
             return result;
         }
