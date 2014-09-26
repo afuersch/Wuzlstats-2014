@@ -109,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="ViewModels\Statistics\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -153,6 +152,7 @@
     <Compile Include="ViewModels\Player\SinglePlayerStats.cs" />
     <Compile Include="ViewModels\Player\TeamPlayerStats.cs" />
     <Compile Include="ViewModels\ScoreViewModel.cs" />
+    <Compile Include="ViewModels\Statistics\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animations\anim1.gif" />
