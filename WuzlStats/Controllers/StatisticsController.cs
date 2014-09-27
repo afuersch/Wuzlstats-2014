@@ -27,5 +27,11 @@ namespace WuzlStats.Controllers
             };
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Index(IndexViewModel model)
+        {
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -1,65 +1,69 @@
-﻿@model WuzlStats.ViewModels.Statistics.IndexViewModel          
+﻿@model WuzlStats.ViewModels.Statistics.IndexViewModel         
 
 <h1>Statistics</h1>
 
-<!-- Timespan control -->
-<div class="row">
-    <div class="col-sm-3">
-        @Html.LabelFor(x => x.Start, "Select the timespan:")
-    </div>
-    <div class="col-sm-6 form-group">
-        <div class="input-daterange input-group" id="datepicker">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-            <span class="input-group-addon">from</span>
-            @Html.TextBoxFor(x => x.Start, new { @class = "form-control" })
-            <span class="input-group-addon">to</span>
-            @Html.TextBoxFor(x => x.End, new { @class = "form-control" })
+@using(Html.BeginForm())
+{
+    <!-- Timespan control -->
+    <div class="row">
+        <div class="col-sm-3">
+            @Html.LabelFor(x => x.Start, "Select the timespan:")
+        </div>
+        <div class="col-sm-6 form-group">
+            <div class="input-daterange input-group" id="datepicker">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                <span class="input-group-addon">from</span>
+                @Html.TextBoxFor(x => x.Start, new { @class = "form-control" })
+                <span class="input-group-addon">to</span>
+                @Html.TextBoxFor(x => x.End, new { @class = "form-control" })
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Team selections -->
-<div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            @Html.LabelFor(x => x.Team1Color, "Color")
-            @Html.EnumDropDownListFor(x => x.Team1Color, "-", new { @class = "form-control" })
+    <!-- Team selections -->
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Team1Color, "Team 1")
+                @Html.EnumDropDownListFor(x => x.Team1Color, "-", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Team1Player1, "Player 1")
+                @Html.DropDownListFor(x => x.Team1Player1, Model.Players, "-", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Team1Player2, "Player 2")
+                @Html.DropDownListFor(x => x.Team1Player2, Model.Players, "-", new { @class = "form-control" })
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            @Html.LabelFor(x => x.Team1Player1, "Player 1")
-            @Html.DropDownListFor(x => x.Team1Player1, Model.Players, "-", new { @class = "form-control" })
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Team2Color, "Team 2")
+                @Html.EnumDropDownListFor(x => x.Team2Color, "-", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Team2Player1, "Player 1")
+                @Html.DropDownListFor(x => x.Team2Player1, Model.Players, "-", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Team2Player2, "Player 2")
+                @Html.DropDownListFor(x => x.Team2Player2, Model.Players, "-", new { @class = "form-control" })
+            </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="form-group">
-            @Html.LabelFor(x => x.Team1Player2, "Player 2")
-            @Html.DropDownListFor(x => x.Team1Player2, Model.Players, "-", new { @class = "form-control" })
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-4">
+            <button type="submit" class="btn btn-primary btn-block">Show statistics</button>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            @Html.LabelFor(x => x.Team2Color, "Color")
-            @Html.EnumDropDownListFor(x => x.Team2Color, "-", new { @class = "form-control" })
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            @Html.LabelFor(x => x.Team2Player1, "Player 1")
-            @Html.DropDownListFor(x => x.Team2Player1, Model.Players, "-", new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="form-group">
-            @Html.LabelFor(x => x.Team2Player2, "Player 2")
-            @Html.DropDownListFor(x => x.Team2Player2, Model.Players, "-", new { @class = "form-control" })
-        </div>
-    </div>
-</div>
+}
