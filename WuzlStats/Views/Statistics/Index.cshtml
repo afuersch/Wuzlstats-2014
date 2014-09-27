@@ -1,4 +1,4 @@
-﻿@model WuzlStats.ViewModels.Statistics.IndexViewModel            
+﻿@model WuzlStats.ViewModels.Statistics.IndexViewModel          
 
 <h1>Statistics</h1>
 
@@ -18,3 +18,48 @@
     </div>
 </div>
 
+<!-- Team selections -->
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Team1Color, "Color")
+            @Html.EnumDropDownListFor(x => x.Team1Color, "-", new { @class = "form-control" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Team1Player1, "Player 1")
+            @Html.DropDownListFor(x => x.Team1Player1, Model.Players, "-", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Team1Player2, "Player 2")
+            @Html.DropDownListFor(x => x.Team1Player2, Model.Players, "-", new { @class = "form-control" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Team2Color, "Color")
+            @Html.EnumDropDownListFor(x => x.Team2Color, "-", new { @class = "form-control" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Team2Player1, "Player 1")
+            @Html.DropDownListFor(x => x.Team2Player1, Model.Players, "-", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Team2Player2, "Player 2")
+            @Html.DropDownListFor(x => x.Team2Player2, Model.Players, "-", new { @class = "form-control" })
+        </div>
+    </div>
+</div>
