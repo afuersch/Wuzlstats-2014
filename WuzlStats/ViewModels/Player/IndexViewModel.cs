@@ -15,13 +15,12 @@ namespace WuzlStats.ViewModels.Player
             var teamGames = games.Where(x => x.Position != Position.Both);
             var singleGames = games.Where(x => x.Position == Position.Both);
 
-            var minDate = DateTime.UtcNow.AddDays(-30);
             LastPlayedDate = games.Max(x => x.Game.DateTime).ToLocalTime();
             AllTimeStats = CalculateTeamPlayerStats(teamGames);
-            CurrentStats = CalculateTeamPlayerStats(teamGames.Where(x => x.Game.DateTime >= minDate));
+            CurrentStats = CalculateTeamPlayerStats(teamGames.Where(x => x.Game.DateTime >= MinDate));
 
             AllTimeSingleStats = CalculateSinglePlayerStats(singleGames);
-            CurrentSingleStats = CalculateSinglePlayerStats(singleGames.Where(x => x.Game.DateTime >= minDate));
+            CurrentSingleStats = CalculateSinglePlayerStats(singleGames.Where(x => x.Game.DateTime >= MinDate));
 
             var player = db.Players.FirstOrDefault(p => p.Name == playerName);
 
@@ -137,6 +136,13 @@ namespace WuzlStats.ViewModels.Player
 
         public string Name { get; set; }
         public DateTime LastPlayedDate { get; set; }
+        public DateTime MinDate
+        {
+            get
+            {
+                return DateTime.UtcNow.AddDays(-30);
+            }
+        }
         public TeamPlayerStats AllTimeStats { get; set; }
         public TeamPlayerStats CurrentStats { get; set; }
         public SinglePlayerStats AllTimeSingleStats { get; set; }
