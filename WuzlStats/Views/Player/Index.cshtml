@@ -43,7 +43,7 @@
 
             @foreach (var s in Model.Scores)
             {
-                <tr>
+                <tr class="@(s.DateTime >= Model.MinDate ? "currentStats" : "")">
                     <td>@s.DateTime</td>
                     <td>@if (s.BlueScore > s.RedScore)
                         {
